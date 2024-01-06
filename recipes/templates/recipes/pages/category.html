@@ -1,6 +1,6 @@
 {% extends "global/base.html" %}
 
-{% block titile %} Category | {% endblock titile %}
+{% block titile %} {{ title }} {% endblock titile %}
 {% block content %}
 <div class="main-content main-content-list container">
     {% for recipe in recipes %}
