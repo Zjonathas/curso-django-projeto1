@@ -63,7 +63,7 @@
         </footer>
     {% endif %}
     {% if is_detail_page is True %}
-        <div class="preparation-steps" style="padding: 2rem;">
+        <div class="preparation-steps"">
             {% if recipe.preparation_steps_html is True %}
                 {{ recipe.preparation_steps|safe }}
             {% else %}
