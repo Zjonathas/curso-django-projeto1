@@ -11,6 +11,7 @@
     "--load-plugins=pylint_django",
     "--errors-only"
     ],
+    "editor.rulers" : [79],
     "python.formatting.autopep8Args": ["--indent-size=4"],
     "python.defaultInterpreterPath": "venv/bin/python",
     "[python]": {
