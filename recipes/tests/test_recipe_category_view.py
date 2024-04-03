@@ -2,6 +2,7 @@ from django.urls import resolve, reverse
 from recipes import views
 from .test_recipe_base import RecipeTesteBase
 
+
 class RecipeCategoryViewTest(RecipeTesteBase):
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(
@@ -14,7 +15,7 @@ class RecipeCategoryViewTest(RecipeTesteBase):
             reverse('recipes:category', kwargs={'category_id': 1000})
         )
         self.assertEqual(response.status_code, 404)
-    
+
     def test_recipe_category_template_loads_recipes(self):
         needed_title = 'This is a category test'
         # Need a recipe for this test
@@ -25,7 +26,7 @@ class RecipeCategoryViewTest(RecipeTesteBase):
 
         # Check if one recipe exists
         self.assertIn(needed_title, content)
-    
+
     def test_recipe_category_template_dont_load_not_published(self):
         """Test recipe is_publish False dont show"""
         recipe = self.make_recipe(is_publish=False)
@@ -35,4 +36,4 @@ class RecipeCategoryViewTest(RecipeTesteBase):
         )
 
         self.assertEqual(response.status_code, 404)
-        
+    

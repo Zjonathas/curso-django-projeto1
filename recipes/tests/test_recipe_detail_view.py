@@ -2,6 +2,7 @@ from django.urls import resolve, reverse
 from recipes import views
 from .test_recipe_base import RecipeTesteBase
 
+
 class RecipDetailViewTest(RecipeTesteBase):
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(
@@ -18,9 +19,9 @@ class RecipDetailViewTest(RecipeTesteBase):
 
         response = self.client.get(
             reverse(
-                'recipes:recipe', 
+                'recipes:recipe',
                 kwargs={
-                'id' : 1
+                    'id': 1
                 }
             )
         )
@@ -42,10 +43,9 @@ class RecipDetailViewTest(RecipeTesteBase):
             reverse(
                 'recipes:recipe', 
                 kwargs={
-                'id' : recipe.id
+                    'id': recipe.id
                 }
             )
         )
 
         self.assertEqual(response.status_code, 404)
-    

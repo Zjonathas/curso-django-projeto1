@@ -9,22 +9,22 @@ class RecipeSearchTermTest(RecipeTesteBase):
         resolved = resolve(url)
 
         self.assertIs(resolved.func, views.search)
-    
+
     def test_recipe_search_load_correct_template(self):
         response = self.client.get(reverse('recipes:search') + '?q=teste')
         self.assertTemplateUsed(response, 'recipes/pages/search.html')
-    
+
     def test_recipe_search_404_if_no_seach_term(self):
         response = self.client.get(reverse('recipes:search'))
         self.assertEqual(response.status_code, 404)
-    
+
     def test_recipe_search_term_ison_page_title_and_escaped(self):
         response = self.client.get(reverse('recipes:search') + '?q=<Test>')
         self.assertIn(
             'Search results for &quot;&lt;Test&gt;&quot; | Recipes',
             response.content.decode('utf-8')
         )
-    
+
     def test_recipe_search_can_find_recipe_by_title(self):
         title1 = 'This is recipe one'
         title2 = 'This is recipe two'
@@ -49,7 +49,3 @@ class RecipeSearchTermTest(RecipeTesteBase):
 
         self.assertIn(recipe1, response_both.context['recipes'])
         self.assertIn(recipe2, response_both.context['recipes'])
-
-
-
-        
