@@ -16,14 +16,14 @@ class RecipeCategoryViewTest(RecipeTesteBase):
         self.assertEqual(response.status_code, 404)
     
     def test_recipe_category_template_loads_recipes(self):
-
         needed_title = 'This is a category test'
-
+        # Need a recipe for this test
         self.make_recipe(title=needed_title)
-        response = self.client.get(reverse('recipes:category', args=(1, )))
-        content = response.content.decode('utf-8')
-        response_context_recipes = response.context['recipes']
 
+        response = self.client.get(reverse('recipes:category', args=(1,)))
+        content = response.content.decode('utf-8')
+
+        # Check if one recipe exists
         self.assertIn(needed_title, content)
     
     def test_recipe_category_template_dont_load_not_published(self):

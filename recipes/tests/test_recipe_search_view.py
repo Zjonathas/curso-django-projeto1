@@ -2,6 +2,7 @@ from django.urls import resolve, reverse
 from recipes import views
 from .test_recipe_base import RecipeTesteBase
 
+
 class RecipeSearchTermTest(RecipeTesteBase):   
     def test_recipe_search_uses_correct_view_function(self):
         url = reverse('recipes:search')
@@ -10,8 +11,8 @@ class RecipeSearchTermTest(RecipeTesteBase):
         self.assertIs(resolved.func, views.search)
     
     def test_recipe_search_load_correct_template(self):
-        response = self.client.get(reverse('recipes:search'))
-        self.assertTemplateUsed('recipes/pages/search')
+        response = self.client.get(reverse('recipes:search') + '?q=teste')
+        self.assertTemplateUsed(response, 'recipes/pages/search.html')
     
     def test_recipe_search_404_if_no_seach_term(self):
         response = self.client.get(reverse('recipes:search'))
@@ -23,3 +24,32 @@ class RecipeSearchTermTest(RecipeTesteBase):
             'Search results for &quot;&lt;Test&gt;&quot; | Recipes',
             response.content.decode('utf-8')
         )
+    
+    def test_recipe_search_can_find_recipe_by_title(self):
+        title1 = 'This is recipe one'
+        title2 = 'This is recipe two'
+
+        recipe1 = self.make_recipe(
+            slug='one', title=title1, author_data={'username': 'one'}
+        )
+        recipe2 = self.make_recipe(
+            slug='two', title=title2, author_data={'username': 'two'}
+        )
+
+        search_url = reverse('recipes:search')
+        response1 = self.client.get(f'{search_url}?q={title1}')
+        response2 = self.client.get(f'{search_url}?q={title2}')
+        response_both = self.client.get(f'{search_url}?q=this')
+
+        self.assertIn(recipe1, response1.context['recipes'])
+        self.assertNotIn(recipe2, response1.context['recipes'])
+
+        self.assertIn(recipe2, response2.context['recipes'])
+        self.assertNotIn(recipe1, response2.context['recipes'])
+
+        self.assertIn(recipe1, response_both.context['recipes'])
+        self.assertIn(recipe2, response_both.context['recipes'])
+
+
+
+        
