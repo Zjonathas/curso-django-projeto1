@@ -132,3 +132,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configurações do Coverage
+COVERAGE_REPORT_HTML_OUTPUT = 'htmlcov'
+COVERAGE_MODULE_EXCLUDES = [
+    'settings*',
+    'urls*',
+    'wsgi*',
+    'tests*',
+]
