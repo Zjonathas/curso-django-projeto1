@@ -2,22 +2,22 @@
 <div class="container pagination">
     <div class="pagination-content">
         {% if pages.first_page_out_of_range %}
-            <a class="page-link page-item" href="?page=1">1</a>
+            <a class="page-link page-item" href="?page=1{{ additional_url_query }}">1</a>
             <span class="page-item">...</span>
         {% endif %}
 
         {% for page in pages.pagination %}
             {% if pages.current_page == page %}
-                <a class="page-link page-item page-current" href="?page={{page}}">{{page}}</a>
+                <a class="page-link page-item page-current" href="?page={{page}}{{ additional_url_query }}">{{page}}</a>
             {% else %} 
-                <a class="page-link page-item" href="?page={{page}}">{{page}}</a>
+                <a class="page-link page-item" href="?page={{page}}{{ additional_url_query }}">{{page}}</a>
             {% endif %}
 
         {% endfor %}
 
         {% if pages.last_page_out_of_range %}
             <span class="page-item">...</span>
-            <a class="page-link page-item" href="?page={{ pages.total_pages }}">{{ pages.total_pages }}</a>
+            <a class="page-link page-item" href="?page={{ pages.total_pages }}{{ additional_url_query }}">{{ pages.total_pages }}</a>
         {% endif %} 
     </div>
 </div>
