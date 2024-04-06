@@ -36,4 +36,3 @@ class RecipeCategoryViewTest(RecipeTesteBase):
         )
 
         self.assertEqual(response.status_code, 404)
-    
