@@ -2,6 +2,15 @@
 
 {% block titile %} Home | {% endblock titile %}
 {% block content %}
+
+{% if messages %}
+<div class="main-content center container">
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+</div>
+{% endif %}
+
 <div class="main-content main-content-list container">
 
     {% for recipe in recipes %}
