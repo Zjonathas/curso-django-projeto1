@@ -17,6 +17,8 @@ def home(request):
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
+    message = messages.error(request, 'Funcionou')
+
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
         'pages': pagination_range,
