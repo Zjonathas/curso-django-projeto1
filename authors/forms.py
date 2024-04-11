@@ -61,14 +61,12 @@ class RegisterForm(forms.ModelForm):
                   'username',
                   'email',
                   'password',]
-        # exclude = ['first_name']
 
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
             'username': 'Username',
             'email': 'E-mail',
-            'password': 'Password',
         }
         help_texts = {
             'email': 'The e-mail must be valid.',
@@ -78,27 +76,6 @@ class RegisterForm(forms.ModelForm):
                 'required': 'This field must not be empty',
             }
         }
-
-    def clean_password(self):
-        data = self.cleaned_data.get('password')
-        if 'atenção' in data:
-            raise ValidationError(
-                'Não digite %(pipoca)s no campo password',
-                code='invalid',
-                params={'pipoca': '"atenção"'}
-            )
-        return data
-
-    def clean_first_name(self):
-        data = self.cleaned_data.get('first_name')
-        if 'John Doe' in data:
-            raise ValidationError(
-                'Não digite %(value)s no campo first name',
-                code='invalid',
-                params={'value': '"John Doe"'}
-            )
-
-        return data
 
     def clean(self):
         cleaned_data = super().clean()
