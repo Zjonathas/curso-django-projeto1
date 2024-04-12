@@ -93,7 +93,6 @@ class RegisterForm(forms.ModelForm):
                   'email',
                   'password',]
 
-
     def clean(self):
         cleaned_data = super().clean()
 
