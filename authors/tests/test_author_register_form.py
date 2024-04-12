@@ -131,3 +131,14 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
         response = self.client.post(url, data=self.form_data, follow=True)
 
         self.assertNotIn(msg, response.content.decode('utf-8'))
+
+    def test_send_get_request_to_registration_create_view_return_404(self):
+        # Validation error password not equal
+        self.form_data['password'] = '@Abc1234'
+        self.form_data['password2'] = '@Abc12345'
+
+        url = reverse('authors:create')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404)
+
