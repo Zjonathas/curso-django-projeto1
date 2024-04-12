@@ -69,13 +69,13 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
     ])
     def test_field_cannot_be_empty(self, field, msg):
         self.form_data[field] = ''
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, data=self.form_data, follow=True)
         self.assertIn(msg, response.content.decode('utf-8'))
 
     def test_username_field_min_length_should_be_4(self):
         self.form_data['username'] = 'tes'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         msg = 'Username must have at least 4 characteres'
         response = self.client.post(url, data=self.form_data, follow=True)
@@ -84,7 +84,7 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
 
     def test_username_field_max_length_should_be_150(self):
         self.form_data['username'] = 'a' * 151
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         msg = 'Username must be a maximum of 150 characters'
         response = self.client.post(url, data=self.form_data, follow=True)
@@ -93,7 +93,7 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
 
     def test_password_field_have_lower_upper_case_letters_and_numbers(self):
         self.form_data['password'] = 'testeteste'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         msg = (
             'Password must have at least one uppercase letter, '
@@ -105,7 +105,7 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
         self.assertIn(msg, response.content.decode('utf-8'))
 
         self.form_data['password'] = '@Abc1234'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, data=self.form_data, follow=True)
 
         self.assertNotIn(msg, response.context['form'].errors.get('password'))
@@ -115,7 +115,7 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
         self.form_data['password'] = '@Abc1234'
         self.form_data['password2'] = '@Abc12345'
 
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, data=self.form_data, follow=True)
 
         msg = 'Password and password2 must be equal'
@@ -127,7 +127,7 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
         self.form_data['password'] = '@Abc1234'
         self.form_data['password2'] = '@Abc1234'
 
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, data=self.form_data, follow=True)
 
         self.assertNotIn(msg, response.content.decode('utf-8'))
@@ -137,13 +137,13 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
         self.form_data['password'] = '@Abc1234'
         self.form_data['password2'] = '@Abc12345'
 
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 404)
  
     def test_if_email_exists(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         self.client.post(url, data=self.form_data, follow=True)
 
@@ -153,9 +153,9 @@ class AuthorRegisterIntegrationTest(DjangoTestCase):
 
         self.assertIn(msg, response.context['form'].errors.get('email'))
         self.assertIn(msg, response.content.decode('utf-8'))
-    
+
     def test_log_in_user(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         self.form_data.update({
             'username': 'testeuser',

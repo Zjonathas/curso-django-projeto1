@@ -10,7 +10,7 @@ def register_view(request):
     form = RegisterForm(register_form_data)
     return render(request, 'authors/pages/register_view.html', {
         'form': form,
-        'form_action': reverse('authors:create'),
+        'form_action': reverse('authors:register_create'),
     })
 
 
@@ -32,4 +32,10 @@ def register_create(request):
 
     return redirect('authors:register')
 
-# Create your views here.
+
+def login_view(request):
+    return render(request, 'authors/pages/login.html')
+
+
+def login_create(request):
+    return render(request, 'authors/pages/login.html')
