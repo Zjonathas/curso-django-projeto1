@@ -1,4 +1,5 @@
 from time import sleep
+import os
 
 
 from selenium import webdriver
@@ -11,6 +12,9 @@ def make_chrome_browser(*options):
     if options is not None:
         for option in options:
             chrome_options.add_argument(option)
+
+    if os.environ.get('SELENIUM_HEADLESS') == '1':
+        chrome_options.add_argument('--headless')
 
     browser = webdriver.Chrome(service=Service(), options=chrome_options)
     return browser
