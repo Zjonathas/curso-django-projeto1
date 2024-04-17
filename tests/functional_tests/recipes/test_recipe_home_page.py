@@ -40,7 +40,6 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
                                                 'main-content-list').text
                       )
 
-        self.sleep(6)
 
     @patch('recipes.views.PER_PAGE', new=2)
     def test_recipe_home_page_pagination(self):
@@ -64,5 +63,3 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
             )),
             2
         )
-
-        self.sleep(5)
