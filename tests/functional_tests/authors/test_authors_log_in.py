@@ -47,3 +47,55 @@ class AuthorLoginTest(AuthorsBaseTest):
             'Not Found',
             self.browser.find_element(By.TAG_NAME, 'body').text
         )
+
+    def test_login_form_is_invalid(self):
+        # User open login page
+        self.browser.get(self.live_server_url + reverse('authors:login'))
+
+        # User see login form
+        login_form = self.browser.find_element(By.CLASS_NAME, 'main-form')
+        username_field = self.get_by_placeholder(
+            login_form, 'Type your username')
+        password_field = self.get_by_placeholder(
+            login_form, 'Type your password')
+
+        # User type your username and password empty
+        username_field.send_keys(' ')
+        password_field.send_keys(' ')
+
+        # User send form
+        login_form.submit()
+
+        # User see the login message Invalid username or password
+        self.assertIn(
+            'Invalid username or password',
+            self.browser.find_element(By.TAG_NAME, 'body').text
+        )
+
+        # End test
+
+    def test_login_form_is_valid_credentials(self):
+        # User open login page
+        self.browser.get(self.live_server_url + reverse('authors:login'))
+
+        # User see login form
+        login_form = self.browser.find_element(By.CLASS_NAME, 'main-form')
+        username_field = self.get_by_placeholder(
+            login_form, 'Type your username')
+        password_field = self.get_by_placeholder(
+            login_form, 'Type your password')
+
+        # User type your username and password invalids
+        username_field.send_keys('pass')
+        password_field.send_keys('pass')
+
+        # User send form
+        login_form.submit()
+
+        # User see the login message invalid credentials
+        self.assertIn(
+            'Invalid credentials',
+            self.browser.find_element(By.TAG_NAME, 'body').text
+        )
+
+        # End test
