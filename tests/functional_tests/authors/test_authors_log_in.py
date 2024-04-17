@@ -99,3 +99,4 @@ class AuthorLoginTest(AuthorsBaseTest):
         )
 
         # End test
+        self.sleep(0)

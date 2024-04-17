@@ -55,6 +55,8 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
         )
         page2.click()
 
+        self.sleep(0)
+
         # See there are 2 more recipes
         self.assertEqual(
             len(self.browser.find_elements(
