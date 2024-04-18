@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import render, redirect
 from django.http import Http404
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, AuthorRecipeForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -105,19 +105,21 @@ def dashboar_view(request):
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard_recipe_edit_view(request, id):
-    recipes = Recipe.objects.filter(
+    recipe = Recipe.objects.filter(
         is_publish=False,
         author=request.user,
         pk=id,
-    )
+    ).first()
 
-    if not recipes:
+    if not recipe:
         raise Http404
 
-    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
+    form = AuthorRecipeForm(
+        data=request.POST or None,
+        instance=recipe
+    )
 
     return render(request, 'authors/pages/dashboard_recipe.html', {
-            'recipes': page_obj,
-            'pages': pagination_range,
+            'form': form,
             }
     )
