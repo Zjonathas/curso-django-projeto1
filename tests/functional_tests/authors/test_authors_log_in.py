@@ -40,7 +40,7 @@ class AuthorLoginTest(AuthorsBaseTest):
 
     def test_login_create_raises_404_if_not_POST_method(self):
         self.browser.get(
-            self.live_server_url + 
+            self.live_server_url +
             reverse('authors:login_create'))
 
         self.assertIn(

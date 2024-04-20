@@ -12,13 +12,6 @@ class AuthorsRegisterTest(AuthorsBaseTest):
             '/html/body/main/div[2]/form'
         )
 
-    def fill_form_dummy_data(self, form):
-        fields = form.find_elements(By.TAG_NAME, 'input')
-
-        for field in fields:
-            if field.is_displayed():
-                field.send_keys(' ' * 20)
-
     def form_field_test_with_callback(self, callback):
         self.browser.get(self.live_server_url + '/authors/register/')
         form = self.get_form()
