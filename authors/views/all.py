@@ -101,25 +101,3 @@ def dashboar_view(request):
             'pages': pagination_range,
             }
     )
-
-
-@login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_delete_view(request):
-    if not request.POST:
-        raise Http404
-
-    POST = request.POST
-    id = POST.get('id')
-
-    recipe = Recipe.objects.filter(
-        is_publish=False,
-        author=request.user,
-        pk=id,
-    ).first()
-
-    if not recipe:
-        raise Http404
-
-    recipe.delete()
-    messages.success(request, 'Delete successfully')
-    return redirect(reverse('authors:dashboard'))
