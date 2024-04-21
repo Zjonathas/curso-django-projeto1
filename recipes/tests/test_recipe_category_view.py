@@ -32,7 +32,7 @@ class RecipeCategoryViewTest(RecipeTesteBase):
         recipe = self.make_recipe(is_publish=False)
 
         response = self.client.get(
-            reverse('recipes:recipe', kwargs={'id': recipe.category.id})
+            reverse('recipes:recipe', kwargs={'pk': recipe.category.id})
         )
 
         self.assertEqual(response.status_code, 404)
