@@ -1,6 +1,7 @@
 import os
 
 
+from django.http.response import Http404
 from django.db.models import Q
 from django.views.generic import ListView
 from recipes.models import Recipe
@@ -13,7 +14,6 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 9))
 class RecipeListViewBase(ListView):
     model = Recipe
     context_object_name = 'recipes'
-    paginate_by = None
     ordering = ['-id']
     template_name = 'recipes/pages/home.html'
 
@@ -46,19 +46,34 @@ class RecipeListViewHome(RecipeListViewBase):
 class RecipeListViewCategory(RecipeListViewBase):
     template_name = 'recipes/pages/category.html'
 
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+
+        ctx.update({
+            'title': f'{ctx.get("recipes")[0].category.name} - Category | '
+        })
+
+        return ctx
+
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
             category__id=self.kwargs.get('category_id')
         )
+
+        if not qs:
+            raise Http404()
+
         return qs
 
 
 class RecipeListViewSearch(RecipeListViewBase):
-    template_name = 'recipes/pages/category.html'
+    template_name = 'recipes/pages/search.html'
 
     def get_queryset(self, *args, **kwargs):
         search_term = self.request.GET.get('q', '')
+        if not search_term:
+            raise Http404()
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
             Q(
