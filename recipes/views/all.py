@@ -11,17 +11,6 @@ from recipes.models import Recipe
 PER_PAGE = int(os.environ.get('PER_PAGE', 9))
 
 
-def home(request):
-    recipes = Recipe.objects.filter(is_publish=True).order_by('-id')
-
-    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
-
-    return render(request, 'recipes/pages/home.html', context={
-        'recipes': page_obj,
-        'pages': pagination_range,
-    })
-
-
 def category(request, category_id):
     recipes = get_list_or_404(
         Recipe.objects.filter(
