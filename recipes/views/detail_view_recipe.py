@@ -41,8 +41,8 @@ class RecipeDetailAPI(RecipeDetail):
         else:
             recipe_dict['cover'] = ''
 
-        del recipe_dict['is_published']
-        del recipe_dict['preparation_steps_is_html']
+        del recipe_dict['is_publish']
+        del recipe_dict['preparation_steps_html']
 
         return JsonResponse(
             recipe_dict,
