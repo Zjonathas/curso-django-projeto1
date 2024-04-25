@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from django.contrib.contenttypes.fields import GenericRelation
+from tag.models import Tag
 
 
 class Category(models.Model):
@@ -24,10 +26,11 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_publish = models.BooleanField(default=False)
-    cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/', blank=True, default='')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,
-        default=None,)
+    cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/', blank=True, default='')  # noqa: E501
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,  # noqa: E501
+                                 default=None,)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    tags = GenericRelation(Tag, related_query_name='recipes')
 
     def __str__(self):
         return self.title
