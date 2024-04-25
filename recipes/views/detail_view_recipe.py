@@ -1,6 +1,3 @@
-from typing import Any
-from django.http.response import Http404, HttpResponse as HttpResponse
-from django.db.models.query import QuerySet
 from django.views.generic import DetailView
 from django.http import JsonResponse
 from recipes.models import Recipe
