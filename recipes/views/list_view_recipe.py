@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from recipes.models import Recipe
 from django.http import JsonResponse
 from utils.pagination import make_pagination
+from tag.models import Tag
 
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 9))
@@ -24,6 +25,7 @@ class RecipeListViewBase(ListView):
             is_publish=True
         )
         qs = qs.select_related('author', 'category')
+        qs = qs.prefetch_related('tags')
         return qs
 
     def get_context_data(self, *args, **kwargs):
@@ -106,6 +108,31 @@ class RecipeListViewSearch(RecipeListViewBase):
             'page_title': f'Search results for "{search_term}" | ',
             'search_term': search_term,
             'additional_url_query': f'&q={search_term}',
+        })
+
+        return context
+
+
+class RecipeListViewTag(RecipeListViewBase):
+    template_name = 'recipes/pages/tag.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(tags__slug=self.kwargs.get('slug', ''))
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        page_title = Tag.objects.filter(slug=self.kwargs.get('slug', '')) \
+            .first()
+
+        if not page_title:
+            page_title = 'No recipes found'
+
+        page_title = f'{page_title} - Tag |'
+
+        context.update({
+            'page_title': f'"{page_title}" | ',
         })
 
         return context

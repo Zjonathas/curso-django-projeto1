@@ -6,7 +6,7 @@ from tag.models import Tag
 
 class TagInLine(GenericStackedInline):
     model = Tag
-    fiels = 'name',
+    fields = 'name',
     extra = 1
 
 

@@ -5,6 +5,9 @@
     "python.testing.unittestEnabled": false, // ms-python.python
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [], // -x to bail
+    "pylint.args": [
+        "--rcfile=${workspaceFolder}/.vscode/.pylintrc"
+    ],
     "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": true,
     "python.linting.pylintArgs": [
