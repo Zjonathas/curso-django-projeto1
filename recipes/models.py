@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
-from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
 
 
@@ -12,6 +11,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=65)
@@ -30,7 +30,7 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,  # noqa: E501
                                  default=None,)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    tags = GenericRelation(Tag, related_query_name='recipes')
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.title
