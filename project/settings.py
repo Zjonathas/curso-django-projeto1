@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants
+from utils.enviroment import parse_coma_separated_str_to_list, get_env_variable
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'INSECURE') # noqa E501
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get('DEBUG') == '1' else False
 
-ALLOWED_HOSTS: list[str] = ['*']
+ALLOWED_HOSTS: list[str] = parse_coma_separated_str_to_list(get_env_variable('ALLOWED_HOSTS')) # noqa E501
+CSRF_TRUSTED_ORIGINS: list[str] = parse_coma_separated_str_to_list(get_env_variable('CSRF_TRUSTED_ORIGINS')) # noqa E501
 
 
 # Application definition
