@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from utils.pagination import make_pagination
 from tag.models import Tag
 from django.utils import translation
+from django.utils.translation import gettext as _
 
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 9))
@@ -70,9 +71,11 @@ class RecipeListViewCategory(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
+        category_translation = _('Category')
 
         ctx.update({
-            'title': f'{ctx.get("recipes")[0].category.name} - Category | '
+            'title': f'{ctx.get("recipes")[0].category.name} -'
+            f'{category_translation} | '
         })
 
         return ctx
