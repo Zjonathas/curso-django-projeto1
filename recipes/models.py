@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from tag.models import Tag
 from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.Model):
@@ -16,18 +17,18 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=65)
-    description = models.CharField(max_length=165)
+    title = models.CharField(max_length=65, verbose_name=_('Title'))
+    description = models.CharField(max_length=165, verbose_name=_('Description'))  # noqa: E501
     slug = models.SlugField(unique=True)
-    preparation_time = models.IntegerField()
-    preparation_time_unit = models.CharField(max_length=65)
-    servings = models.IntegerField()
-    servings_unit = models.CharField(max_length=65)
-    preparation_steps = models.TextField()
+    preparation_time = models.IntegerField(verbose_name=_('Preparation time'))
+    preparation_time_unit = models.CharField(max_length=65, verbose_name=_('Preparation time unit'))  # noqa: E501
+    servings = models.IntegerField(verbose_name=_('Servings'))
+    servings_unit = models.CharField(max_length=65, verbose_name=_('Servings unit'))  # noqa: E501
+    preparation_steps = models.TextField(verbose_name=_('Preparation steps'))
     preparation_steps_html = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_publish = models.BooleanField(default=False)
+    is_publish = models.BooleanField(default=False, verbose_name=_('Is publish'))  # noqa: E501
     cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/', blank=True, default='')  # noqa: E501
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,  # noqa: E501
                                  default=None,)
@@ -64,3 +65,7 @@ class Recipe(models.Model):
 
         if error_messages:
             raise ValidationError(error_messages)
+
+    class Meta:
+        verbose_name = _('Recipe')
+        verbose_name_plural = _('Recipes')
