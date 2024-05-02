@@ -12,7 +12,7 @@ class RecipeModelTest(RecipeTesteBase):
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='Test Default Author'),
-            title='Recipe Title',
+            title='Recipe Title1',
             description='Description',
             slug='recipe-slug-for-no-defaults',
             preparation_time=10,
@@ -40,12 +40,12 @@ class RecipeModelTest(RecipeTesteBase):
 
     def test_recipe_preparation_steps_is_html_is_false_by_default(self):
         recipe = self.make_recipe_no_defaults()
-        self.assertFalse(recipe.preparation_steps_html, 
+        self.assertFalse(recipe.preparation_steps_html,
                          msg='Recipe preparation steps html is not False')
 
     def test_recipe_is_publish_is_false_by_default(self):
         recipe = self.make_recipe_no_defaults()
-        self.assertFalse(recipe.is_publish, 
+        self.assertFalse(recipe.is_publish,
                          msg='Recipe is publish is not False')
 
     def test_recipe_string_represatation(self):
