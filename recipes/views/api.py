@@ -11,6 +11,7 @@ def recipe_api_list(request):
     serializer = RecipeSerializer(instance=recipes, many=True)
     return Response(serializer.data)
 
+
 @api_view()
 def recipe_api_detail(request, pk):
     recipe = get_object_or_404(
