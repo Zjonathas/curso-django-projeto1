@@ -12,6 +12,8 @@ from django.utils.translation import gettext_lazy as _
 import os
 from django.conf import settings
 from PIL import Image
+from random import SystemRandom
+import string
 
 
 class Category(models.Model):
@@ -82,10 +84,13 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug = f'{slugify(self.title)}'
-            while Recipe.objects.filter(slug=slug).exists():
-                slug = slug + '-' + get_random_string(length=4)
-            self.slug = slug
+            rand_letters = ''.join(
+                SystemRandom().choices(
+                    string.ascii_letters + string.digits,
+                    k=5
+                )
+            )
+            self.slug = slugify(f'{self.title}-{rand_letters}')
 
         saved = super().save(*args, **kwargs)
 

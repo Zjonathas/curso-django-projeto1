@@ -15,13 +15,13 @@ def recipe_api_list(request):
         recipes = Recipe.objects.get_publish()[:10]
         serializer = RecipeSerializer(instance=recipes, many=True,
                                       context={'request': request})
+        return Response(serializer.data)
     elif request.method == 'POST':
         serializer = RecipeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED,
+                        context={'request': request})
 
 
 @api_view()
