@@ -17,11 +17,15 @@ def recipe_api_list(request):
                                       context={'request': request})
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = RecipeSerializer(data=request.data)
+        serializer = RecipeSerializer(data=request.data,
+                                      context={'request': request})
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED,
-                        context={'request': request})
+        serializer.save(
+            author_id=1,
+            category_id=1,
+            tags=[1, 2]
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view()
