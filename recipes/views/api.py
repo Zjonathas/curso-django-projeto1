@@ -7,6 +7,7 @@ from tag.models import Tag
 from ..serializers import TagSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 
 
 class RecipeAPIv2Pagination(PageNumberPagination):
@@ -17,6 +18,7 @@ class RecipeAPIv2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_publish()
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIv2Pagination
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         qs = super().get_queryset()
