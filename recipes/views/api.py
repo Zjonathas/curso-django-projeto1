@@ -21,6 +21,7 @@ class RecipeAPIv2ViewSet(ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIv2Pagination
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -44,7 +45,7 @@ class RecipeAPIv2ViewSet(ModelViewSet):
         if self.request.method in ['PATCH', 'DELETE']:
             self.permission_classes = [IsOwner, ]
         return super().get_permissions()
-    
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
