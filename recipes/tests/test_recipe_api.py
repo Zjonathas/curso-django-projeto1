@@ -5,10 +5,27 @@ from unittest.mock import patch
 
 
 class RecipeAPIv2Test(RecipeMixin, test.APITestCase):
-    def get_list_url(self, reverse_result=None):
+    def get_recipe_reverse_url(self, reverse_result=None):
         api_url = reverse_result or reverse('recipes:recipes-api-list')
+        return api_url
+
+    def get_list_url(self, reverse_result=None):
+        api_url = self.get_recipe_reverse_url(reverse_result)
         response = self.client.get(api_url)
         return response
+
+    def get_recipe_raw_data(self):
+        tag = self.make_tag()
+        return {
+            'title': 'This is the title',
+            'description': 'This is the description',
+            'preparation_time': 1,
+            'preparation_time_unit': 'Minutes',
+            'servings': '1',
+            'servings_unit': 'Person',
+            'preparation_steps': 'This is the preparation steps.',
+            'tags': [tag.id],
+        }
 
     def test_recipe_api_list_returns_status_code_200(self):
         response = self.get_list_url()
@@ -67,3 +84,28 @@ class RecipeAPIv2Test(RecipeMixin, test.APITestCase):
         api_url = reverse('recipes:recipes-api-list')
         response = self.client.post(api_url, data={})
         self.assertEqual(response.status_code, 401)
+
+    def get_jwt_login(self):
+        user_data = {
+            'username': 'testuser',
+            'password': 'testpassword'
+        }
+        self.make_author(
+            username=user_data['username'],
+            password=user_data['password'])
+
+        response = self.client.post(
+            reverse('recipes:token_obtain_pair'),
+            data={**user_data}
+            )
+
+        return response.data.get('access')
+
+    def test_recipe_api_list_logged_user_can_create_a_recipe(self):
+        data = self.get_recipe_raw_data()
+        response = self.client.post(
+            self.get_recipe_reverse_url(),
+            data=data,
+            HTTP_AUTHORIZATION=f'Bearer {self.get_jwt_login()}'
+        )
+        self.assertEqual(response.status_code, 201)

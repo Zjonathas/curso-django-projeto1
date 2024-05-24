@@ -1,5 +1,5 @@
 from django.test import TestCase
-from recipes.models import Category, Recipe, User
+from recipes.models import Category, Recipe, User, Tag
 
 
 class RecipeMixin:
@@ -72,6 +72,10 @@ class RecipeMixin:
             recipe = self.make_recipe(**kwargs)
             recipes.append(recipe)
         return recipes
+
+    def make_tag(self,):
+        tag = Tag.objects.create(name='Tag')
+        return tag
 
 
 class RecipeTesteBase(TestCase, RecipeMixin):
