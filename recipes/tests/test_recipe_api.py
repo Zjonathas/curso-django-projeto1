@@ -62,3 +62,8 @@ class RecipeAPIv2Test(RecipeMixin, test.APITestCase):
 
         # We should onle see recipes from the wanted category
         self.assertEqual(len(response.data.get('results')), 9)
+
+    def test_recipe_api_list_user_must_send_jwt_token_to_create_recipe(self):
+        api_url = reverse('recipes:recipes-api-list')
+        response = self.client.post(api_url, data={})
+        self.assertEqual(response.status_code, 401)
