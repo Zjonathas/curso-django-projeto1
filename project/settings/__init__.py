@@ -11,3 +11,4 @@ from .messages import *
 from .coverage_settings import *
 from .debug_toolbar import * # isort:skip
 from .rest_framework_settings_project import * # isort:skip
+from .cors_headers import * # isort:skip
